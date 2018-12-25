@@ -26,14 +26,12 @@ function promptCustomer() {
                 type: "input",
                 message: "What is the name of the item you would like to purchase?",
                 name: "userChoice",
-                validate: value => {
-                    isNaN(value) ? false : true;
-                }
             }
         ])
         .then(answer => {
-            const query = "SELECT product_name, price, stock_quantity FROM products WHERE ?"
-            console.log("USER CHOICE: " + userChoice);
+            var item = answer.userChoice;
+            console.log(item)
+            searchSQL(item);
         });
 }
 
@@ -41,12 +39,16 @@ function displayProducts() {
     connection.query('SELECT * FROM products', (err, res) => {
         if (err) throw error;
         res.forEach((item, value) => {
-            console.log(`******\nItem Name: ${res[value].product_name} \nItem Price: ${res[value].price}\nQuantity: ${res[value].stock_quantity} \nItem Department: ${res[value].department_name}\n******* `);
+            console.log(`*************************\nItem Name: ${res[value].product_name} \nItem Price: ${res[value].price}\nQuantity: ${res[value].stock_quantity} \nItem Department: ${res[value].department_name}\n`);
         });
         promptCustomer();
     }
     );
 }
 
-
-
+function searchSQL(item) {
+    connection.query("SELECT * FROM products WHERE ?", { product_name: item }, (err, res) => {
+        console.log(res[0].product_name, res[0].price, res[0].stock_quantity);
+    }
+    )
+}; 
