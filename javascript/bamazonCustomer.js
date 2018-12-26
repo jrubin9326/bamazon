@@ -75,7 +75,7 @@ function newSelection() {
                 name: 'userResponse',
                 choices: ['Yes', 'No']
             }
-        ]).then(function (input) {
+        ]).then(input => {
             input.userResponse === 'Yes' ? displayProducts() : "Thank you for shopping, please return soon."
         })
 }
