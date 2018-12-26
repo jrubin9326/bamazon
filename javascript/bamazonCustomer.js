@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: '',
+    password: '1234Asdf!',
     database: 'bamazon'
 });
 
@@ -61,9 +61,22 @@ function searchSQL(item, quantity) {
             console.log(`You have purchased ${quantity} for $${cost}. There are now ${remainder} in stock.`)
         } else if (res[0].stock_quantity - parseFloat(quantity) < 0) {
             console.log("Invalid Quantity")
-        }
+        } newSelection();
     }
     )
 };
 
+function newSelection() {
+    inquirer
+        .prompt([
+            {
+                type: 'list',
+                message: 'Would you like to continue shopping?',
+                name: 'userResponse',
+                choices: ['Yes', 'No']
+            }
+        ]).then(function (input) {
+            input.userResponse === 'Yes' ? displayProducts() : "Thank you for shopping, please return soon."
+        })
+}
 
